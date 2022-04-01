@@ -8,23 +8,15 @@ const sizes = ElementUtils.getElementSizes(canvas);
 // css stuff
 const lightest = ElementUtils.getCssVariableValue("--lightest");
 
-// console.log(canvas);
+// drawing stuff
 
-// console.log(ElementUtils.rem_size_in_pixels);
+const drawBackground = () => {
+  context.fillStyle = lightest;
 
-// console.log(ElementUtils.remToPixels(10));
+  context.fillRect(0, 0, sizes.width, sizes.height);
+};
 
-// console.log(ElementUtils.pixelsToRem(16));
-
-// console.log(ElementUtils.getElementSizes(canvas));
-
-// const gameTick = (a: number) => {
-//   console.log(a);
-
-//   requestAnimationFrame(gameTick);
-// };
-
-// requestAnimationFrame(gameTick);
+// movement stuff
 
 enum DirectionsEnum {
   left = "left",
@@ -60,13 +52,9 @@ const keyboardHandler = (event: KeyboardEvent) => {
   }
 };
 
-const drawBackground = () => {
-  context.fillStyle = lightest;
-
-  context.fillRect(0, 0, sizes.width, sizes.height);
-};
-
 window.document.addEventListener("keydown", keyboardHandler);
+
+// update screen
 
 const gameTick = () => {
   drawBackground();
