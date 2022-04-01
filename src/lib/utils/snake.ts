@@ -13,10 +13,8 @@ abstract class SnakeUtils {
         return new Snake(snake.x, snake.y + movement_speed);
       case DirectionsEnum.up:
         return new Snake(snake.x, snake.y - movement_speed);
-
       case DirectionsEnum.left:
         return new Snake(snake.x - movement_speed, snake.y);
-
       case DirectionsEnum.right:
         return new Snake(snake.x + movement_speed, snake.y);
     }
@@ -32,25 +30,25 @@ abstract class SnakeUtils {
     const right = snake.x + half_block;
     const left = snake.x - half_block;
 
-    let result_snake = snake;
+    let result = snake;
 
     if (right < 0) {
-      result_snake = new Snake(canvas_info.width, snake.y);
+      result = new Snake(canvas_info.width, snake.y);
     }
 
     if (left > canvas_info.width) {
-      result_snake = new Snake(0, snake.y);
+      result = new Snake(0, snake.y);
     }
 
     if (bottom < 0) {
-      result_snake = new Snake(snake.x, canvas_info.height);
+      result = new Snake(snake.x, canvas_info.height);
     }
 
     if (top > canvas_info.height) {
-      result_snake = new Snake(snake.x, 0);
+      result = new Snake(snake.x, 0);
     }
 
-    return result_snake;
+    return result;
   }
 
   static handleConstraints(
@@ -64,18 +62,18 @@ abstract class SnakeUtils {
     const right = snake.x + half_block;
     const left = snake.x - half_block;
 
-    let snake_result = snake;
+    let result = snake;
 
     if (
       snake_direction == DirectionsEnum.left ||
       snake_direction == DirectionsEnum.right
     ) {
       if (top <= 0) {
-        snake_result = new Snake(snake.x, half_block);
+        result = new Snake(snake.x, half_block);
       }
 
       if (bottom >= canvas_info.height) {
-        snake_result = new Snake(snake.x, canvas_info.height - half_block);
+        result = new Snake(snake.x, canvas_info.height - half_block);
       }
     }
 
@@ -84,15 +82,15 @@ abstract class SnakeUtils {
       snake_direction == DirectionsEnum.down
     ) {
       if (left <= 0) {
-        snake_result = new Snake(half_block, snake.y);
+        result = new Snake(half_block, snake.y);
       }
 
       if (right >= canvas_info.width) {
-        snake_result = new Snake(canvas_info.width - half_block, snake.y);
+        result = new Snake(canvas_info.width - half_block, snake.y);
       }
     }
 
-    return snake_result;
+    return result;
   }
 
   static handlePositioning(
