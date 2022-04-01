@@ -92,8 +92,7 @@ const handleSnakeAcceleration = (
 const handleSnakeTeleport = (
   snake: Snake,
   half_block: number,
-  canvas: HTMLCanvasElement,
-  snake_direction: DirectionsEnum
+  canvas: HTMLCanvasElement
 ) => {
   const top = snake.y - half_block;
   const bottom = snake.y + half_block;
@@ -121,10 +120,54 @@ const handleSnakeTeleport = (
   return result_snake;
 };
 
+const handleSnakeConstraints = (
+  snake: Snake,
+  half_block: number,
+  snake_direction: DirectionsEnum,
+  canvas: HTMLCanvasElement
+) => {
+  const top = snake.y - half_block;
+  const bottom = snake.y + half_block;
+  const right = snake.x + half_block;
+  const left = snake.x - half_block;
+
+  let snake_result = snake;
+
+  if (
+    snake_direction == DirectionsEnum.left ||
+    snake_direction == DirectionsEnum.right
+  ) {
+    if (top <= 0) {
+      snake_result = new Snake(snake.x, half_block);
+    }
+
+    if (bottom >= canvas.height) {
+      snake_result = new Snake(snake.x, canvas.height - half_block);
+    }
+  }
+
+  if (
+    snake_direction == DirectionsEnum.up ||
+    snake_direction == DirectionsEnum.down
+  ) {
+    if (left <= 0) {
+      snake_result = new Snake(half_block, snake.y);
+    }
+
+    if (right >= canvas.width) {
+      snake_result = new Snake(canvas.width - half_block, snake.y);
+    }
+  }
+
+  return snake_result;
+};
+
 const gameTick = () => {
   drawBackground(context);
 
-  snake = handleSnakeTeleport(snake, half_block, canvas, snake_direction);
+  snake = handleSnakeTeleport(snake, half_block, canvas);
+
+  snake = handleSnakeConstraints(snake, half_block, snake_direction, canvas);
 
   drawSnake(snake, block_size, context);
 
