@@ -1,6 +1,7 @@
-import { CanvasUtils, ElementUtils } from "~/lib/utils";
+import { CanvasUtils, ElementUtils, SnakeUtils } from "~/lib/utils";
 import { Snake } from "~/lib/models";
 import { ICanvasInfo } from "~lib/interfaces";
+import { DirectionsEnum } from "~/lib/enums";
 
 // canvas stuff
 const context = CanvasUtils.context;
@@ -37,13 +38,6 @@ const drawSnake = (
 
 // movement stuff
 
-enum DirectionsEnum {
-  left = "left",
-  right = "right",
-  up = "up",
-  down = "down",
-}
-
 let snake_direction: DirectionsEnum = DirectionsEnum.right;
 
 const changeDirection = (direction: DirectionsEnum) => {
@@ -73,113 +67,23 @@ window.document.addEventListener("keydown", keyboardHandler);
 
 // update screen
 
-const handleSnakeAcceleration = (
-  snake: Snake,
-  snake_direction: DirectionsEnum,
-  movement_speed: number
-) => {
-  switch (snake_direction) {
-    case DirectionsEnum.down:
-      return new Snake(snake.x, snake.y + movement_speed);
-    case DirectionsEnum.up:
-      return new Snake(snake.x, snake.y - movement_speed);
-
-    case DirectionsEnum.left:
-      return new Snake(snake.x - movement_speed, snake.y);
-
-    case DirectionsEnum.right:
-      return new Snake(snake.x + movement_speed, snake.y);
-  }
-};
-
-const handleSnakeTeleport = (
-  snake: Snake,
-  half_block: number,
-  canvas_info: ICanvasInfo
-) => {
-  const top = snake.y - half_block;
-  const bottom = snake.y + half_block;
-  const right = snake.x + half_block;
-  const left = snake.x - half_block;
-
-  let result_snake = snake;
-
-  if (right < 0) {
-    result_snake = new Snake(canvas_info.width, snake.y);
-  }
-
-  if (left > canvas_info.width) {
-    result_snake = new Snake(0, snake.y);
-  }
-
-  if (bottom < 0) {
-    result_snake = new Snake(snake.x, canvas_info.height);
-  }
-
-  if (top > canvas_info.height) {
-    result_snake = new Snake(snake.x, 0);
-  }
-
-  return result_snake;
-};
-
-const handleSnakeConstraints = (
-  snake: Snake,
-  half_block: number,
-  snake_direction: DirectionsEnum,
-  canvas_info: ICanvasInfo
-) => {
-  const top = snake.y - half_block;
-  const bottom = snake.y + half_block;
-  const right = snake.x + half_block;
-  const left = snake.x - half_block;
-
-  let snake_result = snake;
-
-  if (
-    snake_direction == DirectionsEnum.left ||
-    snake_direction == DirectionsEnum.right
-  ) {
-    if (top <= 0) {
-      snake_result = new Snake(snake.x, half_block);
-    }
-
-    if (bottom >= canvas_info.height) {
-      snake_result = new Snake(snake.x, canvas_info.height - half_block);
-    }
-  }
-
-  if (
-    snake_direction == DirectionsEnum.up ||
-    snake_direction == DirectionsEnum.down
-  ) {
-    if (left <= 0) {
-      snake_result = new Snake(half_block, snake.y);
-    }
-
-    if (right >= canvas_info.width) {
-      snake_result = new Snake(canvas_info.width - half_block, snake.y);
-    }
-  }
-
-  return snake_result;
-};
-
 const gameTick = () => {
   drawBackground(canvas_info, context);
 
-  snake = handleSnakeTeleport(snake, half_block, canvas_info);
-
-  snake = handleSnakeConstraints(
+  const current_snake = SnakeUtils.handlePositioning(
     snake,
     half_block,
     snake_direction,
     canvas_info
   );
 
-  drawSnake(snake, block_size, context);
+  drawSnake(current_snake, block_size, context);
 
-  snake = handleSnakeAcceleration(snake, snake_direction, movement_speed);
+  snake = SnakeUtils.handleAcceleration(
+    current_snake,
+    snake_direction,
+    movement_speed
+  );
 
   requestAnimationFrame(gameTick);
 };
