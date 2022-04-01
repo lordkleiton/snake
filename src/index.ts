@@ -1,10 +1,10 @@
 import { CanvasUtils, ElementUtils } from "~/lib/utils";
 import { Snake } from "~/lib/models";
+import { ICanvasInfo } from "~lib/interfaces";
 
 // canvas stuff
-const canvas = CanvasUtils.canvas;
 const context = CanvasUtils.context;
-const sizes = ElementUtils.getElementSizes(canvas);
+const canvas_info = CanvasUtils.info;
 
 // css stuff
 const lightest = ElementUtils.getCssVariableValue("--lightest");
@@ -12,10 +12,13 @@ const darkest = ElementUtils.getCssVariableValue("--darkest");
 
 // drawing stuff
 
-const drawBackground = (context: CanvasRenderingContext2D) => {
+const drawBackground = (
+  canvas_info: ICanvasInfo,
+  context: CanvasRenderingContext2D
+) => {
   context.fillStyle = lightest;
 
-  context.fillRect(0, 0, sizes.width, sizes.height);
+  context.fillRect(0, 0, canvas_info.width, canvas_info.height);
 };
 
 const drawSnake = (
@@ -92,7 +95,7 @@ const handleSnakeAcceleration = (
 const handleSnakeTeleport = (
   snake: Snake,
   half_block: number,
-  canvas: HTMLCanvasElement
+  canvas_info: ICanvasInfo
 ) => {
   const top = snake.y - half_block;
   const bottom = snake.y + half_block;
@@ -102,18 +105,18 @@ const handleSnakeTeleport = (
   let result_snake = snake;
 
   if (right < 0) {
-    result_snake = new Snake(canvas.width, snake.y);
+    result_snake = new Snake(canvas_info.width, snake.y);
   }
 
-  if (left > canvas.width) {
+  if (left > canvas_info.width) {
     result_snake = new Snake(0, snake.y);
   }
 
   if (bottom < 0) {
-    result_snake = new Snake(snake.x, canvas.height);
+    result_snake = new Snake(snake.x, canvas_info.height);
   }
 
-  if (top > canvas.height) {
+  if (top > canvas_info.height) {
     result_snake = new Snake(snake.x, 0);
   }
 
@@ -124,7 +127,7 @@ const handleSnakeConstraints = (
   snake: Snake,
   half_block: number,
   snake_direction: DirectionsEnum,
-  canvas: HTMLCanvasElement
+  canvas_info: ICanvasInfo
 ) => {
   const top = snake.y - half_block;
   const bottom = snake.y + half_block;
@@ -141,8 +144,8 @@ const handleSnakeConstraints = (
       snake_result = new Snake(snake.x, half_block);
     }
 
-    if (bottom >= canvas.height) {
-      snake_result = new Snake(snake.x, canvas.height - half_block);
+    if (bottom >= canvas_info.height) {
+      snake_result = new Snake(snake.x, canvas_info.height - half_block);
     }
   }
 
@@ -154,8 +157,8 @@ const handleSnakeConstraints = (
       snake_result = new Snake(half_block, snake.y);
     }
 
-    if (right >= canvas.width) {
-      snake_result = new Snake(canvas.width - half_block, snake.y);
+    if (right >= canvas_info.width) {
+      snake_result = new Snake(canvas_info.width - half_block, snake.y);
     }
   }
 
@@ -163,11 +166,16 @@ const handleSnakeConstraints = (
 };
 
 const gameTick = () => {
-  drawBackground(context);
+  drawBackground(canvas_info, context);
 
-  snake = handleSnakeTeleport(snake, half_block, canvas);
+  snake = handleSnakeTeleport(snake, half_block, canvas_info);
 
-  snake = handleSnakeConstraints(snake, half_block, snake_direction, canvas);
+  snake = handleSnakeConstraints(
+    snake,
+    half_block,
+    snake_direction,
+    canvas_info
+  );
 
   drawSnake(snake, block_size, context);
 
@@ -185,6 +193,6 @@ const half_block = block_size / 2;
 const movement_speed = block_size / 10;
 
 let snake = new Snake(
-  canvas.width / 2 - half_block,
-  canvas.height / 2 - half_block
+  canvas_info.width / 2 - half_block,
+  canvas_info.height / 2 - half_block
 );
