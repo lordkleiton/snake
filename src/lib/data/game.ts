@@ -1,4 +1,8 @@
+import { DirectionsEnum } from "~/lib/enums";
+
 class GameData {
+  snake_direction: DirectionsEnum = DirectionsEnum.right;
+
   private static _instance: GameData;
 
   private constructor() {}
