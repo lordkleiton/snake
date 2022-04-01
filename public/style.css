@@ -1,0 +1,22 @@
+:root {
+  --lightest: #9bbc0f;
+  --light: #8bac0f;
+  --dark: #306230;
+  --darkest: #0f380f;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+#field {
+  width: 50%;
+  height: 50%;
+  margin: auto;
+  display: block;
+  background-color: var(--lightest);
+  border: 1px solid var(--darkest);
+}
