@@ -36,6 +36,12 @@ abstract class ElementUtils {
   static getElementSizes(element: HTMLElement) {
     return element.getBoundingClientRect();
   }
+
+  static getCssVariableValue(variable: string): string {
+    return window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue(variable);
+  }
 }
 
 export default ElementUtils;
