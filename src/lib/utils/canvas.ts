@@ -1,5 +1,6 @@
 import { ICanvasInfo } from "~/lib/interfaces";
 import { Snake } from "~/lib/models";
+import { GameSettingsData } from "~/lib/data";
 import ElementUtils from "./element";
 
 abstract class CanvasUtils {
@@ -49,6 +50,60 @@ abstract class CanvasUtils {
     this.context.fillStyle = "red";
 
     this.context.fillRect(snake.x - 5, snake.y - 5, 10, 10);
+  }
+
+  static drawYGrid(spacing: number): void {
+    const dark = ElementUtils.getCssVariableValue("--dark");
+    const qty = Math.round(this.info.width / spacing);
+
+    for (let i = 1; i < qty; i++) {
+      const start_x = i * spacing;
+      const end_x = i * spacing;
+      const start_y = 0;
+      const end_y = this.info.height;
+
+      this.context.strokeStyle = dark;
+
+      this.context.beginPath();
+
+      this.context.moveTo(start_x, start_y);
+      this.context.lineTo(end_x, end_y);
+
+      this.context.stroke();
+    }
+  }
+
+  static drawXGrid(spacing: number): void {
+    const dark = ElementUtils.getCssVariableValue("--dark");
+    const qty = Math.round(this.info.width / spacing);
+
+    for (let i = 1; i < qty; i++) {
+      const start_x = 0;
+      const end_x = this.info.width;
+      const start_y = i * spacing;
+      const end_y = i * spacing;
+
+      this.context.strokeStyle = dark;
+
+      this.context.beginPath();
+
+      this.context.moveTo(start_x, start_y);
+      this.context.lineTo(end_x, end_y);
+
+      this.context.stroke();
+    }
+  }
+
+  static drawGrid({
+    x_spacing,
+    y_spacing,
+  }: { x_spacing?: number; y_spacing?: number } = {}): void {
+    const x = x_spacing || GameSettingsData.block_size;
+    const y = y_spacing || GameSettingsData.block_size;
+
+    this.drawXGrid(x);
+
+    this.drawYGrid(y);
   }
 }
 

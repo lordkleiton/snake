@@ -1,6 +1,7 @@
 import { DirectionsEnum } from "~/lib/enums";
 import { Snake } from "~/lib/models";
-import { CanvasUtils, ElementUtils, SnakeUtils } from "~/lib/utils";
+import { CanvasUtils, SnakeUtils } from "~/lib/utils";
+import GameSettingsData from "./game_settings";
 
 class GameData {
   snake_direction: DirectionsEnum = DirectionsEnum.right;
@@ -8,9 +9,9 @@ class GameData {
   private static _instance: GameData;
   private _snake: Snake;
   private _canvas_info = CanvasUtils.info;
-  private _block_size = ElementUtils.remToPixels(1);
-  private _half_block = this._block_size / 2;
-  private _movement_speed = this._block_size / 10;
+  private _block_size = GameSettingsData.block_size;
+  private _half_block = GameSettingsData.half_block;
+  private _movement_speed = GameSettingsData.movement_speed;
 
   private constructor() {
     const snake = new Snake(
@@ -35,6 +36,8 @@ class GameData {
       );
 
       CanvasUtils.drawBackground(this._canvas_info);
+
+      CanvasUtils.drawGrid();
 
       CanvasUtils.drawSnake(current_snake, this._block_size, this._half_block);
 
