@@ -4,12 +4,18 @@ import { GameSettingsData } from "~/lib/data";
 import ElementUtils from "./element";
 
 abstract class CanvasUtils {
+  private static getCanvasContext(
+    canvas: HTMLCanvasElement
+  ): CanvasRenderingContext2D {
+    return canvas.getContext("2d") || ({} as CanvasRenderingContext2D);
+  }
+
   static get canvas(): HTMLCanvasElement {
     return ElementUtils.getCanvas();
   }
 
   static get context(): CanvasRenderingContext2D {
-    return this.canvas.getContext("2d") || ({} as CanvasRenderingContext2D);
+    return this.getCanvasContext(this.canvas);
   }
 
   static get info(): ICanvasInfo {
