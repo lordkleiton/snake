@@ -5,6 +5,10 @@
   --darkest: #0f380f;
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
   height: 100vh;
   margin: 0;
