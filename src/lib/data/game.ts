@@ -1,5 +1,5 @@
 import { DirectionsEnum } from "~/lib/enums";
-import { SnakeSegment } from "~/lib/models";
+import { SnakeSegment, Snake } from "~/lib/models";
 import { CanvasUtils, SnakeUtils } from "~/lib/utils";
 import { ICoordinates } from "~/lib/interfaces";
 import GameSettingsData from "./game_settings";
@@ -8,7 +8,7 @@ class GameData {
   snake_direction: DirectionsEnum = DirectionsEnum.right;
 
   private static _instance: GameData;
-  private _snake: SnakeSegment;
+  private _snake: Snake;
   private _canvas_info = CanvasUtils.info;
   private _block_size = GameSettingsData.block_size;
   private _half_block = GameSettingsData.half_block;
@@ -16,8 +16,8 @@ class GameData {
 
   private constructor() {
     const { x, y } = this.getInitialSnakeCoordinates();
-
-    const snake = new SnakeSegment(x, y);
+    const head = new SnakeSegment(x, y);
+    const snake = new Snake(head);
 
     this._snake = snake;
   }
@@ -30,8 +30,13 @@ class GameData {
     const tick_time = 90;
 
     const gameTick = () => {
+      // const new_head = new SnakeSegment(
+      //   this._snake.head.x + this._block_size,
+      //   this._snake.head.y
+      // );
+
       const current_snake = SnakeUtils.handlePositioning(
-        this._snake,
+        this._snake.head,
         this._half_block,
         this.snake_direction,
         this._canvas_info
@@ -43,13 +48,13 @@ class GameData {
 
       CanvasUtils.drawSnake(current_snake, this._block_size, this._half_block);
 
-      this._snake = SnakeUtils.handleAcceleration(
+      this._snake.head = SnakeUtils.handleAcceleration(
         current_snake,
         this.snake_direction,
         this._movement_speed
       );
 
-      setTimeout(gameTick, tick_time);
+      // setTimeout(gameTick, tick_time);
     };
 
     setTimeout(gameTick, tick_time);
