@@ -1,5 +1,5 @@
 import { DirectionsEnum } from "~/lib/enums";
-import { Snake } from "~/lib/models";
+import { SnakeSegment } from "~/lib/models";
 import { CanvasUtils, SnakeUtils } from "~/lib/utils";
 import { ICoordinates } from "~/lib/interfaces";
 import GameSettingsData from "./game_settings";
@@ -8,7 +8,7 @@ class GameData {
   snake_direction: DirectionsEnum = DirectionsEnum.right;
 
   private static _instance: GameData;
-  private _snake: Snake;
+  private _snake: SnakeSegment;
   private _canvas_info = CanvasUtils.info;
   private _block_size = GameSettingsData.block_size;
   private _half_block = GameSettingsData.half_block;
@@ -17,7 +17,7 @@ class GameData {
   private constructor() {
     const { x, y } = this.getInitialSnakeCoordinates();
 
-    const snake = new Snake(x, y);
+    const snake = new SnakeSegment(x, y);
 
     this._snake = snake;
   }

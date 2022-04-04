@@ -1,5 +1,5 @@
 import { ICanvasInfo } from "~/lib/interfaces";
-import { Snake } from "~/lib/models";
+import { SnakeSegment } from "~/lib/models";
 import { GameSettingsData } from "~/lib/data";
 import ElementUtils from "./element";
 
@@ -58,7 +58,11 @@ abstract class CanvasUtils {
     this.context.stroke();
   }
 
-  static drawSnake(snake: Snake, size: number, half_block: number): void {
+  static drawSnake(
+    snake: SnakeSegment,
+    size: number,
+    half_block: number
+  ): void {
     const dark = ElementUtils.getCssVariableValue("--dark");
 
     this.context.fillStyle = dark;

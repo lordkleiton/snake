@@ -1,5 +1,5 @@
-class Snake {
+class SnakeSegment {
   constructor(readonly x: number, readonly y: number) {}
 }
 
-export default Snake;
+export default SnakeSegment;

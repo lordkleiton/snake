@@ -1,3 +1,3 @@
-import Snake from "./snake";
+import SnakeSegment from "./snake_segment";
 
-export { Snake };
+export { SnakeSegment };
