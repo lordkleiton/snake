@@ -27,6 +27,8 @@ class GameData {
   }
 
   startGame() {
+    const tick_time = 90;
+
     const gameTick = () => {
       const current_snake = SnakeUtils.handlePositioning(
         this._snake,
@@ -37,8 +39,6 @@ class GameData {
 
       CanvasUtils.drawBackground(this._canvas_info);
 
-      CanvasUtils.drawGrid();
-
       CanvasUtils.drawSnake(current_snake, this._block_size, this._half_block);
 
       this._snake = SnakeUtils.handleAcceleration(
@@ -47,10 +47,10 @@ class GameData {
         this._movement_speed
       );
 
-      requestAnimationFrame(gameTick);
+      setTimeout(gameTick, tick_time);
     };
 
-    requestAnimationFrame(gameTick);
+    setTimeout(gameTick, tick_time);
   }
 }
 

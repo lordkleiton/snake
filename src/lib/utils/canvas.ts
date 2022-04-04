@@ -53,9 +53,9 @@ abstract class CanvasUtils {
   }
 
   static drawSnake(snake: Snake, size: number, half_block: number): void {
-    const darkest = ElementUtils.getCssVariableValue("--darkest");
+    const dark = ElementUtils.getCssVariableValue("--dark");
 
-    this.context.fillStyle = darkest;
+    this.context.fillStyle = dark;
 
     this.context.fillRect(
       snake.x - half_block,
@@ -63,10 +63,6 @@ abstract class CanvasUtils {
       size,
       size
     );
-
-    this.context.fillStyle = "red";
-
-    this.context.fillRect(snake.x - 5, snake.y - 5, 10, 10);
   }
 
   static drawYGrid(spacing: number): void {
