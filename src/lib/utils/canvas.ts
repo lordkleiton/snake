@@ -35,6 +35,23 @@ abstract class CanvasUtils {
     this.context.fillRect(0, 0, canvas_info.width, canvas_info.height);
   }
 
+  private static drawLine(
+    start_x: number,
+    end_x: number,
+    start_y: number,
+    end_y: number,
+    color: string
+  ): void {
+    this.context.strokeStyle = color;
+
+    this.context.beginPath();
+
+    this.context.moveTo(start_x, start_y);
+    this.context.lineTo(end_x, end_y);
+
+    this.context.stroke();
+  }
+
   static drawSnake(snake: Snake, size: number, half_block: number): void {
     const darkest = ElementUtils.getCssVariableValue("--darkest");
 
@@ -57,19 +74,13 @@ abstract class CanvasUtils {
     const qty = Math.round(this.info.width / spacing);
 
     for (let i = 1; i < qty; i++) {
-      const start_x = i * spacing;
-      const end_x = i * spacing;
+      const x_spacing = i * spacing;
+      const start_x = x_spacing;
+      const end_x = x_spacing;
       const start_y = 0;
       const end_y = this.info.height;
 
-      this.context.strokeStyle = dark;
-
-      this.context.beginPath();
-
-      this.context.moveTo(start_x, start_y);
-      this.context.lineTo(end_x, end_y);
-
-      this.context.stroke();
+      this.drawLine(start_x, end_x, start_y, end_y, dark);
     }
   }
 
@@ -78,19 +89,13 @@ abstract class CanvasUtils {
     const qty = Math.round(this.info.width / spacing);
 
     for (let i = 1; i < qty; i++) {
+      const y_spacing = i * spacing;
       const start_x = 0;
       const end_x = this.info.width;
-      const start_y = i * spacing;
-      const end_y = i * spacing;
+      const start_y = y_spacing;
+      const end_y = y_spacing;
 
-      this.context.strokeStyle = dark;
-
-      this.context.beginPath();
-
-      this.context.moveTo(start_x, start_y);
-      this.context.lineTo(end_x, end_y);
-
-      this.context.stroke();
+      this.drawLine(start_x, end_x, start_y, end_y, dark);
     }
   }
 
