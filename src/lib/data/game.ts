@@ -55,16 +55,21 @@ class GameData {
     setTimeout(gameTick, tick_time);
   }
 
+  private transformCoordinate(axis_size: number): number {
+    const units = axis_size / this._block_size;
+    const units_half = Math.floor(units / 2);
+    const axis_half = units_half * this._block_size;
+    const correct_position = axis_half - this._half_block;
+
+    return correct_position;
+  }
+
   private getInitialSnakeCoordinates(): ICoordinates {
     const { height, width } = this._canvas_info;
-    const w_units = width / this._block_size;
-    const h_units = height / this._block_size;
-    const y_half = Math.floor(h_units / 2);
-    const x_half = Math.floor(w_units / 2);
-    const snake_x = x_half * this._block_size - this._half_block;
-    const snake_y = y_half * this._block_size - this._half_block;
+    const x = this.transformCoordinate(width);
+    const y = this.transformCoordinate(height);
 
-    return { x: snake_x, y: snake_y };
+    return { x, y };
   }
 }
 
