@@ -1,6 +1,7 @@
 import { DirectionsEnum } from "~/lib/enums";
 import { Snake } from "~/lib/models";
 import { CanvasUtils, SnakeUtils } from "~/lib/utils";
+import { ICoordinates } from "~/lib/interfaces";
 import GameSettingsData from "./game_settings";
 
 class GameData {
@@ -14,10 +15,9 @@ class GameData {
   private _movement_speed = GameSettingsData.movement_speed;
 
   private constructor() {
-    const snake = new Snake(
-      this._canvas_info.width / 2 - this._half_block,
-      this._canvas_info.height / 2 - this._half_block
-    );
+    const { x, y } = this.getInitialSnakeCoordinates();
+
+    const snake = new Snake(x, y);
 
     this._snake = snake;
   }
@@ -39,6 +39,8 @@ class GameData {
 
       CanvasUtils.drawBackground(this._canvas_info);
 
+      CanvasUtils.drawGrid();
+
       CanvasUtils.drawSnake(current_snake, this._block_size, this._half_block);
 
       this._snake = SnakeUtils.handleAcceleration(
@@ -51,6 +53,18 @@ class GameData {
     };
 
     setTimeout(gameTick, tick_time);
+  }
+
+  private getInitialSnakeCoordinates(): ICoordinates {
+    const { height, width } = this._canvas_info;
+    const w_units = width / this._block_size;
+    const h_units = height / this._block_size;
+    const y_half = Math.floor(h_units / 2);
+    const x_half = Math.floor(w_units / 2);
+    const snake_x = x_half * this._block_size - this._half_block;
+    const snake_y = y_half * this._block_size - this._half_block;
+
+    return { x: snake_x, y: snake_y };
   }
 }
 
