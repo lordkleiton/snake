@@ -32,20 +32,24 @@ abstract class SnakeUtils {
 
     let result = snake;
 
+    // ponta direita sai da tela pela esquerda
     if (right < 0) {
-      result = new Snake(canvas_info.width, snake.y);
+      result = new Snake(canvas_info.width - half_block, snake.y);
     }
 
+    // ponta esquerda sai da tela pela direita
     if (left > canvas_info.width) {
-      result = new Snake(0, snake.y);
+      result = new Snake(0 + half_block, snake.y);
     }
 
+    // ponta de baixo sai por cima da tela
     if (bottom < 0) {
-      result = new Snake(snake.x, canvas_info.height);
+      result = new Snake(snake.x, canvas_info.height - half_block);
     }
 
+    // ponta de cima sai por baixo da tela
     if (top > canvas_info.height) {
-      result = new Snake(snake.x, 0);
+      result = new Snake(snake.x, 0 + half_block);
     }
 
     return result;
