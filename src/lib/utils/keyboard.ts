@@ -3,23 +3,28 @@ import { DirectionsEnum } from "~/lib/enums";
 
 abstract class KeyboardUtils {
   static keyboardHandler = (event: KeyboardEvent) => {
-    const instance = GameData.Instance;
+    const { Instance: instance } = GameData;
+    const { key } = event;
+    const direction = instance.snake_direction;
+    const down = "ArrowDown";
+    const up = "ArrowUp";
+    const left = "ArrowLeft";
+    const right = "ArrowRight";
 
-    switch (event.key) {
-      case "ArrowDown":
-        instance.snake_direction = DirectionsEnum.down;
-        break;
-      case "ArrowLeft":
-        instance.snake_direction = DirectionsEnum.left;
-        break;
-      case "ArrowRight":
-        instance.snake_direction = DirectionsEnum.right;
-        break;
-      case "ArrowUp":
-        instance.snake_direction = DirectionsEnum.up;
-        break;
-      default:
-        instance.snake_direction = instance.snake_direction;
+    if (direction != DirectionsEnum.left && key == right) {
+      instance.snake_direction = DirectionsEnum.right;
+    }
+
+    if (direction != DirectionsEnum.right && key == left) {
+      instance.snake_direction = DirectionsEnum.left;
+    }
+
+    if (direction != DirectionsEnum.up && key == down) {
+      instance.snake_direction = DirectionsEnum.down;
+    }
+
+    if (direction != DirectionsEnum.down && key == up) {
+      instance.snake_direction = DirectionsEnum.up;
     }
   };
 }
