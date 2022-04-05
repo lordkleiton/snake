@@ -1,5 +1,5 @@
 import { ICanvasInfo } from "~/lib/interfaces";
-import { Snake, SnakeSegment } from "~/lib/models";
+import { Food, Snake, SnakeSegment } from "~/lib/models";
 import { GameSettingsData } from "~/lib/data";
 import ElementUtils from "./element";
 
@@ -73,6 +73,14 @@ abstract class CanvasUtils {
       size,
       size
     );
+  }
+
+  static drawFood(food: Food, size: number, half_block: number): void {
+    const dark = ElementUtils.getCssVariableValue("--dark");
+
+    this.context.fillStyle = dark;
+
+    this.context.fillRect(food.x - half_block, food.y - half_block, size, size);
   }
 
   static drawYGrid(spacing: number): void {
