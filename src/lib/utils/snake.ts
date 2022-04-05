@@ -143,18 +143,29 @@ abstract class SnakeUtils {
     return current_head;
   }
 
-  static updateSnake(
-    snake: Snake,
+  static getNextHead(
     current_head: SnakeSegment,
     direction: DirectionsEnum
-  ): void {
-    const new_head = this.handleAcceleration(
+  ): SnakeSegment {
+    const next_head = this.handleAcceleration(
       current_head,
       direction,
       GameSettingsData.movement_speed
     );
 
-    snake.updateBodyMovement(new_head);
+    return next_head;
+  }
+
+  static updateSnake(snake: Snake, next_head: SnakeSegment): void {
+    snake.updateBodyMovement(next_head);
+  }
+
+  static collisionOccurred(snake: Snake): boolean {
+    const { x, y } = snake.head;
+    const body = snake.body.slice(1);
+    const result = body.find(segment => segment.x == x && segment.y == y);
+
+    return !!result;
   }
 }
 
