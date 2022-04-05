@@ -33,23 +33,27 @@ abstract class SnakeUtils {
     let result = snake;
 
     // ponta direita sai da tela pela esquerda
-    if (right < 0) {
-      result = new SnakeSegment(canvas_info.width - half_block, snake.y);
+    // "teleporta direita"
+    if (right <= 0) {
+      result = new SnakeSegment(canvas_info.width + half_block, snake.y);
     }
 
     // ponta esquerda sai da tela pela direita
-    if (left > canvas_info.width) {
-      result = new SnakeSegment(0 + half_block, snake.y);
+    // "teleporta esquerda"
+    if (left >= canvas_info.width) {
+      result = new SnakeSegment(0 - half_block, snake.y);
     }
 
     // ponta de baixo sai por cima da tela
-    if (bottom < 0) {
-      result = new SnakeSegment(snake.x, canvas_info.height - half_block);
+    // "teleporta baixo"
+    if (bottom <= 0) {
+      result = new SnakeSegment(snake.x, canvas_info.height + half_block);
     }
 
     // ponta de cima sai por baixo da tela
-    if (top > canvas_info.height) {
-      result = new SnakeSegment(snake.x, 0 + half_block);
+    // "teleporta cima"
+    if (top >= canvas_info.height) {
+      result = new SnakeSegment(snake.x, 0 - half_block);
     }
 
     return result;
