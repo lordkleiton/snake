@@ -1,7 +1,6 @@
 import { DirectionsEnum } from "~/lib/enums";
-import { SnakeSegment, Snake } from "~/lib/models";
+import { Snake } from "~/lib/models";
 import { CanvasUtils, SnakeUtils } from "~/lib/utils";
-import { ICoordinates } from "~/lib/interfaces";
 import GameSettingsData from "./game_settings";
 
 class GameData {
@@ -15,8 +14,7 @@ class GameData {
   private _movement_speed = GameSettingsData.movement_speed;
 
   private constructor() {
-    const { x, y } = this.getInitialSnakeCoordinates();
-    const head = new SnakeSegment(x, y);
+    const head = SnakeUtils.generateFirstHead();
     const snake = new Snake(head);
 
     this._snake = snake;
@@ -65,23 +63,6 @@ class GameData {
     };
 
     setTimeout(gameTick, tick_time);
-  }
-
-  private transformCoordinate(axis_size: number): number {
-    const units = axis_size / this._block_size;
-    const units_half = Math.floor(units / 2);
-    const axis_half = units_half * this._block_size;
-    const correct_position = axis_half - this._half_block;
-
-    return correct_position;
-  }
-
-  private getInitialSnakeCoordinates(): ICoordinates {
-    const { height, width } = this._canvas_info;
-    const x = this.transformCoordinate(width);
-    const y = this.transformCoordinate(height);
-
-    return { x, y };
   }
 }
 
