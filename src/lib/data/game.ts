@@ -1,6 +1,6 @@
 import { DirectionsEnum } from "~/lib/enums";
-import { Snake } from "~/lib/models";
-import { CanvasUtils, SnakeUtils } from "~/lib/utils";
+import { Snake, Food } from "~/lib/models";
+import { CanvasUtils, FoodUtils, SnakeUtils } from "~/lib/utils";
 import GameSettingsData from "./game_settings";
 
 class GameData {
@@ -8,12 +8,14 @@ class GameData {
 
   private static _instance: GameData;
   private _snake: Snake;
+  private _food: Food;
   private _block_size = GameSettingsData.block_size;
 
   private constructor() {
     const head = SnakeUtils.generateFirstHead();
     const snake = new Snake(head);
 
+    this._food = new Food(this._block_size / 2, this._block_size / 2);
     this._snake = snake;
   }
 
@@ -35,10 +37,29 @@ class GameData {
         this._snake,
         this.snake_direction
       );
+      const next_head = SnakeUtils.getNextHead(
+        current_head,
+        this.snake_direction
+      );
+      const food_eaten = FoodUtils.collisionOccurred(this._food, next_head);
 
       CanvasUtils.drawSnake(this._snake);
 
-      SnakeUtils.updateSnake(this._snake, current_head, this.snake_direction);
+      CanvasUtils.drawFood(
+        this._food,
+        GameSettingsData.block_size,
+        GameSettingsData.half_block
+      );
+
+      if (food_eaten) {
+        this._snake.addSegment(this.snake_direction, this._block_size);
+      }
+
+      const game_over = SnakeUtils.collisionOccurred(this._snake);
+
+      if (game_over) console.log("game over");
+
+      SnakeUtils.updateSnake(this._snake, next_head);
 
       setTimeout(gameTick, tick_time);
     };
