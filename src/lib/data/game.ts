@@ -27,16 +27,17 @@ class GameData {
   }
 
   startGame() {
-    const tick_time = 90;
+    const tick_time = 100;
+    this._snake.addSegment(this.snake_direction, this._block_size);
+    this._snake.addSegment(this.snake_direction, this._block_size);
+    this._snake.addSegment(this.snake_direction, this._block_size);
+    this._snake.addSegment(this.snake_direction, this._block_size);
 
     const gameTick = () => {
-      // const new_head = new SnakeSegment(
-      //   this._snake.head.x + this._block_size,
-      //   this._snake.head.y
-      // );
+      const head = this._snake.head;
 
-      const current_snake = SnakeUtils.handlePositioning(
-        this._snake.head,
+      const current_head = SnakeUtils.handlePositioning(
+        head,
         this._half_block,
         this.snake_direction,
         this._canvas_info
@@ -46,15 +47,19 @@ class GameData {
 
       CanvasUtils.drawGrid();
 
-      CanvasUtils.drawSnake(current_snake, this._block_size, this._half_block);
+      this._snake.body.forEach(segment =>
+        CanvasUtils.drawSnake(segment, this._block_size, this._half_block)
+      );
 
-      this._snake.head = SnakeUtils.handleAcceleration(
-        current_snake,
+      const new_head = SnakeUtils.handleAcceleration(
+        current_head,
         this.snake_direction,
         this._movement_speed
       );
 
-      // setTimeout(gameTick, tick_time);
+      this._snake.updateBodyMovement(new_head);
+
+      setTimeout(gameTick, tick_time);
     };
 
     setTimeout(gameTick, tick_time);
