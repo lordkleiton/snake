@@ -1,5 +1,5 @@
 import { ICanvasInfo } from "~/lib/interfaces";
-import { SnakeSegment } from "~/lib/models";
+import { Snake, SnakeSegment } from "~/lib/models";
 import { GameSettingsData } from "~/lib/data";
 import ElementUtils from "./element";
 
@@ -33,7 +33,7 @@ abstract class CanvasUtils {
     return this.canvas.width;
   }
 
-  static drawBackground(canvas_info: ICanvasInfo): void {
+  private static drawBackground(canvas_info: ICanvasInfo): void {
     const lightest = ElementUtils.getCssVariableValue("--lightest");
 
     this.context.fillStyle = lightest;
@@ -58,7 +58,7 @@ abstract class CanvasUtils {
     this.context.stroke();
   }
 
-  static drawSnake(
+  private static drawSnakeSegment(
     snake: SnakeSegment,
     size: number,
     half_block: number
@@ -115,6 +115,22 @@ abstract class CanvasUtils {
     this.drawXGrid(x);
 
     this.drawYGrid(y);
+  }
+
+  static drawSnake(snake: Snake): void {
+    const info = CanvasUtils.info;
+
+    CanvasUtils.drawBackground(info);
+
+    CanvasUtils.drawGrid();
+
+    snake.body.forEach(segment =>
+      CanvasUtils.drawSnakeSegment(
+        segment,
+        GameSettingsData.block_size,
+        GameSettingsData.half_block
+      )
+    );
   }
 }
 

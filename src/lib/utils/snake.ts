@@ -130,10 +130,9 @@ abstract class SnakeUtils {
     return { x, y };
   }
 
-  static updateSnake(snake: Snake, direction: DirectionsEnum): void {
+  static getCurrentHead(snake: Snake, direction: DirectionsEnum): SnakeSegment {
     const head = snake.head;
     const info = CanvasUtils.info;
-
     const current_head = this.handlePositioning(
       head,
       GameSettingsData.half_block,
@@ -141,18 +140,14 @@ abstract class SnakeUtils {
       info
     );
 
-    CanvasUtils.drawBackground(info);
+    return current_head;
+  }
 
-    CanvasUtils.drawGrid();
-
-    snake.body.forEach(segment =>
-      CanvasUtils.drawSnake(
-        segment,
-        GameSettingsData.block_size,
-        GameSettingsData.half_block
-      )
-    );
-
+  static updateSnake(
+    snake: Snake,
+    current_head: SnakeSegment,
+    direction: DirectionsEnum
+  ): void {
     const new_head = this.handleAcceleration(
       current_head,
       direction,

@@ -8,10 +8,7 @@ class GameData {
 
   private static _instance: GameData;
   private _snake: Snake;
-  private _canvas_info = CanvasUtils.info;
   private _block_size = GameSettingsData.block_size;
-  private _half_block = GameSettingsData.half_block;
-  private _movement_speed = GameSettingsData.movement_speed;
 
   private constructor() {
     const head = SnakeUtils.generateFirstHead();
@@ -34,7 +31,14 @@ class GameData {
     this._snake.addSegment(this.snake_direction, this._block_size);
 
     const gameTick = () => {
-      SnakeUtils.updateSnake(this._snake, this.snake_direction);
+      const current_head = SnakeUtils.getCurrentHead(
+        this._snake,
+        this.snake_direction
+      );
+
+      CanvasUtils.drawSnake(this._snake);
+
+      SnakeUtils.updateSnake(this._snake, current_head, this.snake_direction);
 
       setTimeout(gameTick, tick_time);
     };
