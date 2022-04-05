@@ -1,6 +1,8 @@
 import { SnakeSegment } from "~/lib/models";
 import { DirectionsEnum } from "~/lib/enums";
 import { ICanvasInfo } from "~/lib/interfaces";
+import GameSettingsUtils from "./game_settings";
+import CanvasUtils from "./canvas";
 
 abstract class SnakeUtils {
   static handleAcceleration(
@@ -117,6 +119,14 @@ abstract class SnakeUtils {
     );
 
     return result;
+  }
+
+  static generateFirstHead(): SnakeSegment {
+    const { height, width } = CanvasUtils.info;
+    const x = GameSettingsUtils.getMiddleCoordinate(width);
+    const y = GameSettingsUtils.getMiddleCoordinate(height);
+
+    return { x, y };
   }
 }
 
