@@ -32,6 +32,8 @@ class GameData {
     this._snake.addSegment(this.snake_direction, this._block_size);
     this._snake.addSegment(this.snake_direction, this._block_size);
     this._snake.addSegment(this.snake_direction, this._block_size);
+    this._snake.addSegment(this.snake_direction, this._block_size);
+    this._snake.addSegment(this.snake_direction, this._block_size);
 
     const gameTick = () => {
       const head = this._snake.head;

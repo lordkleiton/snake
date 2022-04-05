@@ -17,9 +17,15 @@ class Snake {
   }
 
   updateBodyMovement(head: SnakeSegment): void {
-    this._body.shift();
+    const new_body: SnakeSegment[] = [];
 
-    this._body.unshift(head);
+    for (let i = 1; i < this._body.length; i++) {
+      new_body.push(this._body[i - 1]);
+    }
+
+    new_body.unshift(head);
+
+    this._body = new_body;
   }
 
   addSegment(direction: DirectionsEnum, block_size: number): void {
