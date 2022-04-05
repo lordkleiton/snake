@@ -1,11 +1,12 @@
-import { SnakeSegment } from "~/lib/models";
+import { SnakeSegment, Snake } from "~/lib/models";
 import { DirectionsEnum } from "~/lib/enums";
 import { ICanvasInfo } from "~/lib/interfaces";
 import GameSettingsUtils from "./game_settings";
 import CanvasUtils from "./canvas";
+import { GameSettingsData } from "~/lib/data";
 
 abstract class SnakeUtils {
-  static handleAcceleration(
+  private static handleAcceleration(
     snake: SnakeSegment,
     snake_direction: DirectionsEnum,
     movement_speed: number
@@ -22,7 +23,7 @@ abstract class SnakeUtils {
     }
   }
 
-  static handleTeleport(
+  private static handleTeleport(
     snake: SnakeSegment,
     half_block: number,
     canvas_info: ICanvasInfo
@@ -61,7 +62,7 @@ abstract class SnakeUtils {
     return result;
   }
 
-  static handleConstraints(
+  private static handleConstraints(
     snake: SnakeSegment,
     half_block: number,
     snake_direction: DirectionsEnum,
@@ -103,7 +104,7 @@ abstract class SnakeUtils {
     return result;
   }
 
-  static handlePositioning(
+  private static handlePositioning(
     snake: SnakeSegment,
     half_block: number,
     snake_direction: DirectionsEnum,
@@ -127,6 +128,38 @@ abstract class SnakeUtils {
     const y = GameSettingsUtils.getMiddleCoordinate(height);
 
     return { x, y };
+  }
+
+  static updateSnake(snake: Snake, direction: DirectionsEnum): void {
+    const head = snake.head;
+    const info = CanvasUtils.info;
+
+    const current_head = this.handlePositioning(
+      head,
+      GameSettingsData.half_block,
+      direction,
+      info
+    );
+
+    CanvasUtils.drawBackground(info);
+
+    CanvasUtils.drawGrid();
+
+    snake.body.forEach(segment =>
+      CanvasUtils.drawSnake(
+        segment,
+        GameSettingsData.block_size,
+        GameSettingsData.half_block
+      )
+    );
+
+    const new_head = this.handleAcceleration(
+      current_head,
+      direction,
+      GameSettingsData.movement_speed
+    );
+
+    snake.updateBodyMovement(new_head);
   }
 }
 

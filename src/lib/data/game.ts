@@ -34,30 +34,7 @@ class GameData {
     this._snake.addSegment(this.snake_direction, this._block_size);
 
     const gameTick = () => {
-      const head = this._snake.head;
-
-      const current_head = SnakeUtils.handlePositioning(
-        head,
-        this._half_block,
-        this.snake_direction,
-        this._canvas_info
-      );
-
-      CanvasUtils.drawBackground(this._canvas_info);
-
-      CanvasUtils.drawGrid();
-
-      this._snake.body.forEach(segment =>
-        CanvasUtils.drawSnake(segment, this._block_size, this._half_block)
-      );
-
-      const new_head = SnakeUtils.handleAcceleration(
-        current_head,
-        this.snake_direction,
-        this._movement_speed
-      );
-
-      this._snake.updateBodyMovement(new_head);
+      SnakeUtils.updateSnake(this._snake, this.snake_direction);
 
       setTimeout(gameTick, tick_time);
     };
