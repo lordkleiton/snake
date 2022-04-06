@@ -1,4 +1,4 @@
-import { SnakeSegment, Snake } from "~/lib/models";
+import { SnakeSegment, Snake, Food } from "~/lib/models";
 import { DirectionsEnum } from "~/lib/enums";
 import { ICanvasInfo } from "~/lib/interfaces";
 import GameSettingsUtils from "./game_settings";
@@ -166,6 +166,10 @@ abstract class SnakeUtils {
     const result = body.find(segment => segment.x == x && segment.y == y);
 
     return !!result;
+  }
+
+  static eat(snake: Snake, food: Food): void {
+    snake.eat(food);
   }
 }
 
