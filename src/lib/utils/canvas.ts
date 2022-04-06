@@ -84,7 +84,7 @@ abstract class CanvasUtils {
   }
 
   static drawYGrid(spacing: number): void {
-    const dark = ElementUtils.getCssVariableValue("--dark");
+    const dark = ElementUtils.getCssVariableValue("--light");
     const qty = Math.round(this.info.width / spacing);
 
     for (let i = 1; i < qty; i++) {
@@ -99,7 +99,7 @@ abstract class CanvasUtils {
   }
 
   static drawXGrid(spacing: number): void {
-    const dark = ElementUtils.getCssVariableValue("--dark");
+    const dark = ElementUtils.getCssVariableValue("--light");
     const qty = Math.round(this.info.width / spacing);
 
     for (let i = 1; i < qty; i++) {
@@ -139,6 +139,18 @@ abstract class CanvasUtils {
         GameSettingsData.half_block
       )
     );
+  }
+
+  static drawGameOver(): void {
+    const info = CanvasUtils.info;
+    const dark = ElementUtils.getCssVariableValue("--dark");
+
+    CanvasUtils.drawBackground(info);
+
+    this.context.fillStyle = dark;
+    this.context.font = "bold 3rem sans-serif";
+    this.context.textAlign = "center";
+    this.context.fillText("game over :(", info.width / 2, info.height / 2);
   }
 }
 

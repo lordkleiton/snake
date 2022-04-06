@@ -1,6 +1,6 @@
 import { DirectionsEnum } from "~/lib/enums";
 import { Snake, Food } from "~/lib/models";
-import { CanvasUtils, FoodUtils, SnakeUtils } from "~/lib/utils";
+import { ElementUtils ,CanvasUtils, FoodUtils, SnakeUtils } from "~/lib/utils";
 import GameSettingsData from "./game_settings";
 
 class GameData {
@@ -23,7 +23,8 @@ class GameData {
   }
 
   startGame() {
-    const tick_time = 100;
+    var tick_time = 100;
+    var foodTracker = 0;
     const block_size = GameSettingsData.block_size;
 
     this._snake.addSegment(this.snake_direction, block_size);
@@ -50,7 +51,14 @@ class GameData {
       if (food_eaten) {
         SnakeUtils.eat(this._snake, this._food);
 
-        this._food = FoodUtils.generateFood(this._snake);
+        foodTracker++;
+        if (foodTracker % 5 === 0 && tick_time > 30) {
+          tick_time -= 3;
+          console.log("gotta go fast: ", tick_time);
+        }
+        ElementUtils.updateScore(foodTracker);
+        
+        this._food = FoodUtils.generateFood(this._snake);;
       } else {
         SnakeUtils.updateSnake(this._snake, next_head);
       }
@@ -58,8 +66,7 @@ class GameData {
       const game_over = SnakeUtils.collisionOccurred(this._snake);
 
       if (game_over) {
-        window.alert("game over :(");
-
+        CanvasUtils.drawGameOver();
         return;
       }
 
