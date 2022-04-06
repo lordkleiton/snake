@@ -1,5 +1,5 @@
 # 🐍
 
-Este é um projeto que serve como base para a criação de aplicações em TS com bundle via Webpack
+Joguinho de cobrinha feito em Typescript
 
-Vem com eslint e prettier configurados
+https://lordkleiton-snake.netlify.app/
