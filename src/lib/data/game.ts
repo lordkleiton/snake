@@ -27,11 +27,6 @@ class GameData {
     const block_size = GameSettingsData.block_size;
 
     this._snake.addSegment(this.snake_direction, block_size);
-    this._snake.addSegment(this.snake_direction, block_size);
-    this._snake.addSegment(this.snake_direction, block_size);
-    this._snake.addSegment(this.snake_direction, block_size);
-    this._snake.addSegment(this.snake_direction, block_size);
-    this._snake.addSegment(this.snake_direction, block_size);
 
     const gameTick = () => {
       const current_head = SnakeUtils.getCurrentHead(
