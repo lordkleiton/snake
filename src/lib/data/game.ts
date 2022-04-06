@@ -9,13 +9,12 @@ class GameData {
   private static _instance: GameData;
   private _snake: Snake;
   private _food: Food;
-  private _block_size = GameSettingsData.block_size;
 
   private constructor() {
     const head = SnakeUtils.generateFirstHead();
     const snake = new Snake(head);
 
-    this._food = new Food(this._block_size / 2, this._block_size / 2);
+    this._food = FoodUtils.generateFood(snake);
     this._snake = snake;
   }
 
@@ -25,12 +24,14 @@ class GameData {
 
   startGame() {
     const tick_time = 100;
-    this._snake.addSegment(this.snake_direction, this._block_size);
-    this._snake.addSegment(this.snake_direction, this._block_size);
-    this._snake.addSegment(this.snake_direction, this._block_size);
-    this._snake.addSegment(this.snake_direction, this._block_size);
-    this._snake.addSegment(this.snake_direction, this._block_size);
-    this._snake.addSegment(this.snake_direction, this._block_size);
+    const block_size = GameSettingsData.block_size;
+
+    this._snake.addSegment(this.snake_direction, block_size);
+    this._snake.addSegment(this.snake_direction, block_size);
+    this._snake.addSegment(this.snake_direction, block_size);
+    this._snake.addSegment(this.snake_direction, block_size);
+    this._snake.addSegment(this.snake_direction, block_size);
+    this._snake.addSegment(this.snake_direction, block_size);
 
     const gameTick = () => {
       const current_head = SnakeUtils.getCurrentHead(
@@ -52,14 +53,20 @@ class GameData {
       );
 
       if (food_eaten) {
-        this._snake.addSegment(this.snake_direction, this._block_size);
+        SnakeUtils.eat(this._snake, this._food);
+
+        this._food = FoodUtils.generateFood(this._snake);
+      } else {
+        SnakeUtils.updateSnake(this._snake, next_head);
       }
 
       const game_over = SnakeUtils.collisionOccurred(this._snake);
 
-      if (game_over) console.log("game over");
+      if (game_over) {
+        window.alert("game over :(");
 
-      SnakeUtils.updateSnake(this._snake, next_head);
+        return;
+      }
 
       setTimeout(gameTick, tick_time);
     };
