@@ -4,6 +4,7 @@ import SnakeUtils from "./snake";
 import KeyboardUtils from "./keyboard";
 import FoodUtils from "./food";
 import GameSettingsUtils from "./game_settings";
+import DateUtils from "./date";
 
 export {
   ElementUtils,
@@ -12,4 +13,5 @@ export {
   KeyboardUtils,
   FoodUtils,
   GameSettingsUtils,
+  DateUtils,
 };
