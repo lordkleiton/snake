@@ -1,4 +1,5 @@
 import { DirectionsEnum } from "~/lib/enums";
+import Food from "./food";
 import SnakeSegment from "./snake_segment";
 
 class Snake {
@@ -26,6 +27,12 @@ class Snake {
     new_body.unshift(head);
 
     this._body = new_body;
+  }
+
+  eat(food: Food): void {
+    const new_head = food as SnakeSegment;
+
+    this._body = [new_head, ...this._body];
   }
 
   addSegment(direction: DirectionsEnum, block_size: number): void {
