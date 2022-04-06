@@ -13,7 +13,7 @@ abstract class KeyboardUtils {
       this._last_press = now;
     }
 
-    const diff = DateUtils.getTimeDifferenceInMs(now, this._last_press);
+    const diff = DateUtils.getTimeDifferenceInMs(now, this._last_press) / 2;
 
     if (diff < instance.tick_time) return;
 
