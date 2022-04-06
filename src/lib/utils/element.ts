@@ -42,6 +42,19 @@ abstract class ElementUtils {
       .getComputedStyle(document.documentElement)
       .getPropertyValue(variable);
   }
+
+  static updateScore(score: number) {
+    const score_element = window.document.querySelector(".scoreCurrent");
+
+    if (!score_element) {
+      const new_score = window.document.createElement("span");
+      new_score.classList.add("scoreCurrent");
+
+      return
+    }
+
+    score_element.innerHTML = `${score}`;
+  }
 }
 
 export default ElementUtils;
