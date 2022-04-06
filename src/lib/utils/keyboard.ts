@@ -3,16 +3,11 @@ import { DirectionsEnum } from "~/lib/enums";
 import DateUtils from "./date";
 
 abstract class KeyboardUtils {
-  private static _last_press: Date;
+  private static _last_press: Date = new Date();
 
   static keyboardHandler = (event: KeyboardEvent) => {
-    const now = new Date();
     const { Instance: instance } = GameData;
-
-    if (!this._last_press) {
-      this._last_press = now;
-    }
-
+    const now = new Date();
     const diff = DateUtils.getTimeDifferenceInMs(now, this._last_press);
     const time_to_compare = instance.tick_time / 3;
 
